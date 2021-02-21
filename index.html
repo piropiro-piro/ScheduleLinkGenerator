@@ -113,6 +113,9 @@
                         <button class="btn-large waves-effect waves-dark" style="width:100%;"
                             onclick="getClipboard();">クリップボードにコピー</button>
                     </div>
+                    <div class="center" style="margin-top: 10px;">
+                        <a id="mycalendar">自分のカレンダーにも登録する</a>
+                    </div>
                     <div class="center" style="margin-top: 15px;">
                         <a id="link_twitter">
                             <img src="./img/twitter.png" alt="TWITTER" height="25" />
@@ -143,8 +146,15 @@
                 setDefaultDate: true,
                 format: "yyyy/mm/dd(ddd)"
             };
+            init_time = now.getHours();
+            if (now.getMinutes() != 0){
+                init_time += 1;
+                if (init_time == 24){
+                    init_time = 0;
+                }
+            }
             var time_options = {
-                defaultTime: now.toLocaleTimeString().slice(0, 5),
+                defaultTime: ('00'+ init_time).slice(-2) + ":" + "00",
                 twelveHour: false,
             };
             var picker_start_date = M.Datepicker.init(document.querySelector('#f_start_date'), date_options);
@@ -183,6 +193,7 @@
             ctext += "by 予定リンク ジェネレータ("+location.href+")";
             document.querySelector("#f_clipboard").value = ctext;
             //シェアリンク
+            document.querySelector("#mycalendar").href = link;
             document.querySelector("#link_twitter").href = "https://twitter.com/share?text=" + ctext.replaceAll('&', '%26');
             document.querySelector("#link_line").href = "http://line.me/R/msg/text/?" + ctext.replaceAll('&', '%26');
             //アニメーション
